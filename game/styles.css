@@ -90,7 +90,7 @@ body {
   letter-spacing: 3px;
   margin-bottom: 6px;
 }
-#orderBoardWrap h2 span { color: #ffd97a; font-size: 12px; letter-spacing: 1px; }
+#orderBoardWrap h2 span { color: #fff3c4; font-size: 13px; letter-spacing: 1px; }
 #orderBoard { display: flex; gap: 12px; min-height: 96px; }
 .order-ticket {
   flex: 1;
@@ -98,11 +98,16 @@ body {
   background: var(--card);
   border-radius: 10px;
   border: 3px solid #d9c48a;
-  padding: 8px 10px;
+  padding: 7px 10px;
   cursor: pointer;
   position: relative;
   box-shadow: 0 3px 0 #00000022;
 }
+.order-ticket .ticket-status { font-size: 12px; font-weight: 700; color: #6b5844; margin-top: 3px; min-height: 15px; }
+.order-ticket .ticket-status.ready { color: #2e7d32; }
+.order-ticket .ticket-item { position: relative; display: inline-block; }
+.order-ticket .ticket-item.done { opacity: 0.75; }
+.order-ticket .mini-badge { font-size: 11px; position: absolute; right: -6px; bottom: -4px; }
 .order-ticket.serveable { border-color: var(--green); box-shadow: 0 0 0 3px #4caf5088, 0 3px 0 #00000022; }
 .order-ticket.serveable::after {
   content: "SERVE! \2192";
@@ -141,7 +146,8 @@ body {
   flex: 1;
   display: flex;
   gap: 14px;
-  padding: 12px 16px;
+  padding: 10px 16px;
+  min-height: 0;
   background:
     repeating-linear-gradient(90deg, transparent 0 64px, #00000008 64px 66px),
     linear-gradient(#f3dfae, #eed49a);
@@ -153,26 +159,41 @@ body {
   color: #7a5a30;
   margin-bottom: 6px;
 }
-#stationRow { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; }
+#stationRow { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; align-items: stretch; }
+.station-group { display: flex; flex-direction: column; gap: 8px; }
+.station-group-head {
+  background: var(--tile);
+  color: #fff;
+  font-size: 13px;
+  font-weight: 900;
+  letter-spacing: 3px;
+  text-align: center;
+  border-radius: 8px;
+  padding: 4px 0;
+}
 .station {
   background: #fffaf0;
   border: 3px solid #cbb27f;
   border-radius: 12px;
-  padding: 8px;
-  min-height: 118px;
+  padding: 6px;
+  min-height: 136px;
   cursor: pointer;
   position: relative;
   text-align: center;
   box-shadow: 0 3px 0 #00000018;
+  flex: 1;
 }
 .station:hover { border-color: var(--gold); }
 .station.busy { border-color: var(--amber); }
 .station.done { border-color: var(--green); box-shadow: 0 0 0 3px #4caf5066; }
 .station.burnt { border-color: var(--red); background: #ffe9e2; }
-.station .station-icon { font-size: 30px; }
-.station .station-name { font-size: 13px; font-weight: 900; }
-.station .station-item { font-size: 34px; margin-top: 2px; }
-.station .station-state { font-size: 12px; color: #8a7355; font-weight: 700; }
+.station.burnt .station-item { filter: grayscale(1) brightness(0.55); opacity: 0.6; }
+.station .station-icon { font-size: 30px; height: 34px; line-height: 34px; }
+.station .station-name { font-size: 13px; font-weight: 900; height: 18px; line-height: 18px; }
+.station .station-item { font-size: 32px; height: 40px; line-height: 40px; position: relative; }
+.station .station-state { font-size: 12px; color: #6b5844; font-weight: 700; min-height: 28px; }
+.station .steam { font-size: 13px; letter-spacing: 4px; opacity: 0.85; height: 15px; }
+.station .smoke { font-size: 18px; letter-spacing: 4px; opacity: 0.8; }
 .progress-track { height: 10px; background: #e8dcc0; border-radius: 5px; margin-top: 6px; overflow: hidden; }
 .progress-fill { height: 100%; background: var(--amber); }
 .station.done .progress-fill { background: var(--green); }
@@ -197,10 +218,26 @@ body {
   border-radius: 10px;
   padding: 4px 8px;
   cursor: pointer;
+  position: relative;
+  font-family: "Apple Color Emoji", "Segoe UI Emoji", "Noto Color Emoji", sans-serif;
 }
+.prep-badge {
+  font-size: 13px;
+  position: absolute;
+  right: -4px;
+  bottom: -6px;
+  background: #fff;
+  border: 1px solid #d9c48a;
+  border-radius: 50%;
+  width: 20px;
+  height: 20px;
+  line-height: 19px;
+  text-align: center;
+}
+#handSlot .prep-badge { right: -2px; bottom: -4px; }
 .plate-item:hover { border-color: var(--red); }
-.plate-empty { color: #a08a68; font-size: 14px; align-self: center; }
-#plateHint { font-size: 12px; color: #8a7355; margin-top: 8px; }
+.plate-empty { color: #7a6a52; font-size: 14px; align-self: center; }
+#plateHint { font-size: 13px; color: #5d4a33; margin-top: 8px; min-height: 32px; }
 #plateHint b { color: var(--tile); }
 #serveRow { display: flex; gap: 10px; margin-top: 10px; }
 #serveBtn {
@@ -265,15 +302,28 @@ body {
   display: none;
 }
 #rushBanner.on { display: block; animation: pulse 0.5s infinite alternate; }
+#kitchenTips {
+  margin-top: 10px;
+  background: #fffaf0;
+  border: 3px solid #cbb27f;
+  border-radius: 12px;
+  padding: 8px 12px;
+  box-shadow: 0 3px 0 #00000018;
+  flex: 1;
+}
+#kitchenTips .tips-head { font-size: 13px; font-weight: 900; letter-spacing: 2px; color: #7a5a30; margin-bottom: 4px; }
+#kitchenTips ul { list-style: none; }
+#kitchenTips li { font-size: 13px; color: #5d4a33; margin: 4px 0; line-height: 1.4; }
+#kitchenTips li::before { content: "🍳 "; }
 
 /* ---------- ingredient counter ---------- */
 #ingredientCounter {
   background: var(--wood);
   border-top: 4px solid var(--wood-dark);
-  padding: 10px 16px 12px;
+  padding: 8px 16px 10px;
 }
 #ingredientCounter h3 { color: #fff; font-size: 14px; letter-spacing: 2px; margin-bottom: 8px; }
-#ingredientCounter h3 span { color: #ffd97a; font-size: 12px; letter-spacing: 0; }
+#ingredientCounter h3 span { color: #fff3c4; font-size: 13px; letter-spacing: 0; }
 #ingredientRow { display: flex; gap: 10px; }
 .ingredient-bin {
   flex: 1;
@@ -286,9 +336,9 @@ body {
   cursor: pointer;
 }
 .ingredient-bin:hover { border-color: var(--gold); transform: translateY(-2px); }
-.ingredient-bin .bin-emoji { font-size: 34px; }
+.ingredient-bin .bin-emoji { font-size: 30px; }
 .ingredient-bin .bin-name { font-size: 13px; font-weight: 900; }
-.ingredient-bin .bin-prep { font-size: 11px; color: #8a7355; }
+.ingredient-bin .bin-prep { font-size: 11px; color: #6b5844; }
 .ingredient-bin .bin-key {
   display: inline-block;
   background: var(--tile);
@@ -338,6 +388,9 @@ body {
 }
 .big-btn:hover { filter: brightness(1.08); }
 #endStats { font-size: 18px; line-height: 1.8; margin: 12px 0; }
+#endStats .star-goals { font-size: 15px; font-weight: 700; color: #7a5a30; }
+.panel .keys-line { font-size: 14px; background: #fff; border-radius: 10px; padding: 8px 12px; }
+.panel .desktop-note { font-size: 14px; font-weight: 700; color: #2f6f5e; }
 #endStats .big-coins { font-size: 30px; font-weight: 900; color: var(--red); }
 .stars { font-size: 34px; letter-spacing: 4px; }
 
@@ -361,3 +414,40 @@ body {
 }
 #toast.show { opacity: 1; }
 #toast.gold { background: var(--gold); color: var(--ink); }
+
+/* ---------- floating serve money ---------- */
+#floaterLayer {
+  position: absolute;
+  left: 56%;
+  top: 500px;
+  transform: translateX(-50%);
+  z-index: 25;
+  pointer-events: none;
+  text-align: center;
+}
+.floater {
+  font-size: 22px;
+  font-weight: 900;
+  white-space: nowrap;
+  animation: float-up 1.4s ease-out forwards;
+}
+.floater.gold { color: var(--gold); text-shadow: 0 2px 0 #00000055, 0 0 12px #f2b70588; }
+.floater.combo-pop { color: var(--red); font-size: 26px; animation: float-up 1.4s ease-out forwards, pop 0.3s ease-out; }
+@keyframes float-up { from { transform: translateY(0); opacity: 1; } to { transform: translateY(-64px); opacity: 0; } }
+@keyframes pop { from { transform: scale(0.6); } to { transform: scale(1); } }
+
+/* ---------- heart-loss shake ---------- */
+#hearts.shake { animation: shake 0.45s ease-in-out; display: inline-block; }
+@keyframes shake {
+  0%, 100% { transform: translateX(0); }
+  20% { transform: translateX(-6px); }
+  40% { transform: translateX(6px); }
+  60% { transform: translateX(-4px); }
+  80% { transform: translateX(4px); }
+}
+
+/* ---------- unified emoji rendering ---------- */
+.station-item, .bin-emoji, #handSlot, .ticket-recipe, .served-plate, .station-icon {
+  font-family: "Apple Color Emoji", "Segoe UI Emoji", "Noto Color Emoji", sans-serif;
+}
+#handSlot { position: relative; display: inline-block; }

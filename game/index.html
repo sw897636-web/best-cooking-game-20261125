@@ -4,6 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Golden Ladle Bistro — a tiny cooking rush</title>
+<link rel="icon" href="data:,">
 <link rel="stylesheet" href="./styles.css">
 </head>
 <body>
@@ -52,6 +53,15 @@
         <div class="counter-label">FINISHED &mdash; READY FOR THE WAITER</div>
         <div id="servedPlates"></div>
       </div>
+      <div id="kitchenTips">
+        <div class="tips-head">KITCHEN TIPS</div>
+        <ul>
+          <li>Click a chopping board (or press <b>C</b>) to chop faster.</li>
+          <li>Tomato + potato share one pot &mdash; scoop out a ladled soup.</li>
+          <li>At 1:00 the LUNCH RUSH opens a 4th ticket slot.</li>
+          <li>Serve fast: full patience doubles the tip.</li>
+        </ul>
+      </div>
       <div id="rushBanner">LUNCH RUSH! Orders are running low on patience!</div>
     </section>
   </main>
@@ -62,18 +72,20 @@
   </footer>
 
   <div id="toast"></div>
+  <div id="floaterLayer"></div>
 
   <div class="overlay" id="startOverlay">
     <div class="panel">
       <h1><span class="ladle">&#129379;</span> Golden Ladle Bistro</h1>
       <p>Run a tiny bistro through the lunch rush. Orders land on the board &mdash; cook them, plate them, serve them before patience runs out.</p>
       <ol class="howto">
-        <li><b>1.</b> Click an ingredient on the counter to pick it up.</li>
-        <li><b>2.</b> Click a station to cook it: board chops, grill grills, pot boils. Collect it before it burns!</li>
-        <li><b>3.</b> Click the assembly plate to add each piece. Match a ticket exactly, then hit <b>SERVE</b>.</li>
-        <li><b>4.</b> Faster service means a bigger tip. Three lost orders end the shift early.</li>
+        <li><b>Grab &amp; cook.</b> Click an ingredient on the counter, then click a station: board chops, grill grills, pot boils. Tomato + potato go in the <i>same</i> pot &mdash; scoop out one ladled soup. Click a chopping board (or press <b>C</b>) to chop faster.</li>
+        <li><b>Plate it.</b> Click the assembly plate to add each finished piece. A green tick on a ticket means that piece is already on the plate.</li>
+        <li><b>Serve it.</b> When a ticket glows green and says SERVE, hit <b>SERVE</b> (or <b>Space</b>). Fast service earns a bigger tip; three lost orders end the shift early.</li>
       </ol>
-      <p>150-second shift &middot; 6 original recipes &middot; no timers you can ignore.</p>
+      <p class="keys-line"><b>Keys:</b> 1&ndash;8 grab ingredients &middot; C chop / G grill / B boil &middot; Space serve &middot; T trash &middot; P pause</p>
+      <p>150-second shift &middot; 6 original recipes &middot; $120 for &#9733;, $200 for &#9733;&#9733;, $300 for &#9733;&#9733;&#9733;</p>
+      <p class="desktop-note">&#128187; Best on desktop &mdash; mouse + keyboard, 1280&times;800 window</p>
       <button class="big-btn" id="startBtn" type="button">Start the shift</button>
       <p style="font-size:13px;color:#8a7355">Mouse or keyboard &middot; Enter starts too</p>
     </div>

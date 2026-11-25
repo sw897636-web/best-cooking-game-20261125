@@ -4,15 +4,21 @@
 
 import {
   INGREDIENT_BY_ID,
+  RECIPES,
   STATIONS,
   pickRandomRecipe,
-  recipeNeedsText,
 } from './recipes.js';
 
 export const SHIFT_SECONDS = 150;
 export const MAX_ORDERS = 3;
 export const MAX_HEARTS = 3;
 export const BURN_SECONDS = 6;
+// At 60 seconds the lunch rush opens a fourth ticket slot.
+export const RUSH_AT_SECONDS = 60;
+
+export function maxOrdersAt(elapsed) {
+  return elapsed >= RUSH_AT_SECONDS ? 4 : MAX_ORDERS;
+}
 
 export function createInitialState() {
   return {
@@ -42,6 +48,7 @@ export function createInitialState() {
     muted: false,
     lastServeAt: -999,
     rush: false,
+    rushAnnounced: false,
   };
 }
 
@@ -60,8 +67,12 @@ export function patienceAt(elapsed) {
 }
 
 export function spawnOrder(state) {
-  if (state.orders.length >= MAX_ORDERS) return null;
-  const recipe = pickRandomRecipe(Math.random);
+  if (state.orders.length >= maxOrdersAt(state.elapsed)) return null;
+  // The very first ticket of the shift is always the simple two-piece
+  // tomato soup, so a new cook learns the loop before the rush starts.
+  const recipe = state.nextOrderId === 1
+    ? RECIPES.find((r) => r.id === 'tomato-soup')
+    : pickRandomRecipe(Math.random);
   const patience = patienceAt(state.elapsed);
   const order = {
     id: state.nextOrderId,
@@ -112,7 +123,7 @@ export function serveOrder(state, order) {
   state.orders = state.orders.filter((o) => o.id !== order.id);
   state.plate = [];
   state.lastServeAt = state.elapsed;
-  return { earned, tip, comboBonus, recipeName: order.recipe.name };
+  return { earned, tip, comboBonus, price: order.recipe.price, recipeName: order.recipe.name };
 }
 
 export function expireOrder(state, order) {
@@ -145,7 +156,9 @@ export function removePlateItem(state, index) {
 
 export function plateHintText(state) {
   const matching = findMatchingOrder(state);
-  if (matching) return `Plated: ${matching.recipe.name} — ready to serve!`;
+  if (matching) {
+    return `✅ ${matching.recipe.name} is complete on the plate — ticket #${matching.id} is ready. Hit SERVE to send it to the customer.`;
+  }
   if (state.plate.length === 0) return 'Click an ingredient below, prep it, then click the plate to add it.';
   const partial = state.orders
     .map((order) => {
@@ -153,6 +166,17 @@ export function plateHintText(state) {
       return { order, missing: missing.length };
     })
     .sort((a, b) => a.missing - b.missing)[0];
-  if (!partial) return 'No open order matches this plate yet.';
-  return `Closest order: ${partial.order.recipe.name} — ${partial.missing} item(s) to go. Needs: ${recipeNeedsText(partial.order.recipe)}`;
+  if (!partial) return 'No open ticket matches this plate yet.';
+  const missingList = partial.order.recipe.components
+    .filter((c) => !plateHasComponent(state, c))
+    .map(describeComponentForHint)
+    .join(', ');
+  const count = partial.missing;
+  return `Ticket #${partial.order.id} ${partial.order.recipe.name} still needs ${count} ${count === 1 ? 'item' : 'items'}: ${missingList}.`;
+}
+
+function describeComponentForHint(component) {
+  const ingredient = INGREDIENT_BY_ID[component.ingredient];
+  const prep = component.prep === 'raw' ? '' : `${component.prep} `;
+  return `${prep}${ingredient.name.toLowerCase()}`;
 }

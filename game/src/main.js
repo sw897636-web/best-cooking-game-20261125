@@ -5,6 +5,7 @@
 import { INGREDIENTS, PREP_VERBS } from './recipes.js';
 import {
   SHIFT_SECONDS,
+  RUSH_AT_SECONDS,
   createInitialState,
   expireOrder,
   patienceAt,
@@ -13,7 +14,7 @@ import {
 } from './state.js';
 import { tickStations } from './stations.js';
 import { bindInput } from './input.js';
-import { renderAll, showToast } from './render.js';
+import { renderAll, shakeHearts, showToast } from './render.js';
 import { seedDemoState } from './demo.js';
 import {
   ensureAudio,
@@ -48,6 +49,7 @@ const els = {
   restartBtn: document.getElementById('restartBtn'),
   endStats: document.getElementById('endStats'),
   toast: document.getElementById('toast'),
+  floaterLayer: document.getElementById('floaterLayer'),
 };
 
 let state = createInitialState();
@@ -152,6 +154,7 @@ function tickShift(dt) {
     order.patience -= dt;
     if (order.patience <= 0) {
       expireOrder(state, order);
+      shakeHearts(els);
       showToast(els, `Order #${order.id} walked out! Lost a heart.`);
       if (state.phase === 'over') {
         endShift();
@@ -175,9 +178,15 @@ function tickShift(dt) {
   }
   wasDone = new Set(state.stations.filter((s) => s.state === 'done').map((s) => s.id));
 
-  // The rush: two or more tickets under half patience.
+  // The rush: at 60 seconds the lunch rush opens a fourth ticket slot and
+  // the banner goes up; two impatient tickets also trigger it earlier.
   const rushed = state.orders.filter((o) => o.patience / o.maxPatience < 0.5).length;
-  state.rush = rushed >= 2;
+  state.rush = state.elapsed >= RUSH_AT_SECONDS || rushed >= 2;
+  if (state.elapsed >= RUSH_AT_SECONDS && !state.rushAnnounced) {
+    state.rushAnnounced = true;
+    showToast(els, 'LUNCH RUSH! A fourth ticket slot just opened!', true);
+    playOrderArrive();
+  }
 
   if (state.timeLeft <= 0) {
     endShift();

@@ -6,7 +6,7 @@ import { INGREDIENTS } from './recipes.js';
 import { findMatchingOrder, serveOrder, takeIngredient, trashHand, removePlateItem } from './state.js';
 import { collectStation, loadStation, stationAccepts } from './stations.js';
 import { playChop, playError, playPickUp, playServe, playSizzle } from './audio.js';
-import { showToast } from './render.js';
+import { showToast, spawnServeFloater } from './render.js';
 
 export function bindInput(state, els, hooks) {
   const { onAction, onServe, onStart, onRestart } = hooks;
@@ -48,6 +48,25 @@ export function bindInput(state, els, hooks) {
       return;
     }
     if (station.state === 'cooking') {
+      // A simmering pot takes the other half of the soup while it cooks.
+      if (station.kind === 'boiled' && state.hand) {
+        const check = stationAccepts(station, state.hand);
+        if (check.ok && check.why === 'add-to-pot') {
+          loadStation(state, station.id);
+          playSizzle();
+          showToast(els, 'Added to the pot — tomato + potato simmer into one soup');
+          onAction();
+          return;
+        }
+      }
+      // Hands-on speed: clicking a chopping board hurries the knife along.
+      // Each chop cuts about a quarter of the remaining chop time.
+      if (station.kind === 'chopped') {
+        station.progress = Math.min(1, station.progress + 0.28);
+        playChop();
+        onAction();
+        return;
+      }
       showToast(els, 'Still cooking… watch the bar');
       return;
     }
@@ -167,6 +186,16 @@ export function bindInput(state, els, hooks) {
       return;
     }
     if (event.key === 'c' || event.key === 'C') {
+      // With empty hands, C hurries a chopping board already at work.
+      if (!state.hand) {
+        const busy = state.stations.find((s) => s.kind === 'chopped' && s.state === 'cooking');
+        if (busy) {
+          busy.progress = Math.min(1, busy.progress + 0.28);
+          playChop();
+          onAction();
+          return;
+        }
+      }
       autoLoadStation(state, els, 'chopped', onAction);
     }
     if (event.key === 'g' || event.key === 'G') {
@@ -203,6 +232,7 @@ export function serveFromInput(state, els, onServe) {
   }
   const result = serveOrder(state, matching);
   playServe();
+  spawnServeFloater(els, result, state.combo);
   const comboText = result.comboBonus > 0 ? ` Combo +$${result.comboBonus}!` : '';
   showToast(els, `Served ${result.recipeName}! +$${result.earned} (tip $${result.tip})${comboText}`, true);
   onServe(result);

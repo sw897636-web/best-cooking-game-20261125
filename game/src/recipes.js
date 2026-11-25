@@ -7,6 +7,16 @@ export const PREP_LABELS = {
   chopped: 'chopped',
   grilled: 'grilled',
   boiled: 'boiled',
+  ladled: 'ladled',
+};
+
+// Small badge shown on any prepped piece — in the hand, on the plate and on
+// the station — so a finished ingredient can never be mistaken for a raw one.
+export const PREP_BADGES = {
+  chopped: '🔪',
+  grilled: '🔥',
+  boiled: '💧',
+  ladled: '🍲',
 };
 
 export const PREP_VERBS = {
@@ -31,6 +41,11 @@ export const INGREDIENTS = [
 export const INGREDIENT_BY_ID = Object.fromEntries(
   INGREDIENTS.map((ingredient) => [ingredient.id, ingredient]),
 );
+
+// The ladled soup is not a counter bin — it only exists after tomato and
+// potato have been combined in one pot and scooped into a bowl.
+export const SOUP_INGREDIENT = { id: 'soup', name: 'Soup', emoji: '🍲', preps: [] };
+INGREDIENT_BY_ID.soup = SOUP_INGREDIENT;
 
 // A recipe component is one ingredient in one finished state.
 export const RECIPES = [
@@ -63,8 +78,7 @@ export const RECIPES = [
     emoji: '\u{1F963}',
     price: 14,
     components: [
-      { ingredient: 'tomato', prep: 'boiled' },
-      { ingredient: 'potato', prep: 'boiled' },
+      { ingredient: 'soup', prep: 'ladled' },
       { ingredient: 'carrot', prep: 'chopped' },
     ],
   },
@@ -92,15 +106,14 @@ export const RECIPES = [
     ],
   },
   {
-    id: 'crunch-salad',
-    name: 'Crunch Salad',
-    emoji: '\u{1F955}',
-    price: 15,
+    id: 'golden-melt',
+    name: 'Golden Melt',
+    emoji: '🧀',
+    price: 20,
     components: [
-      { ingredient: 'cucumber', prep: 'chopped' },
-      { ingredient: 'tomato', prep: 'chopped' },
-      { ingredient: 'lettuce', prep: 'chopped' },
-      { ingredient: 'cheese', prep: 'raw' },
+      { ingredient: 'cheese', prep: 'grilled' },
+      { ingredient: 'patty', prep: 'grilled' },
+      { ingredient: 'potato', prep: 'boiled' },
     ],
   },
 ];
@@ -124,7 +137,7 @@ export function describeComponent(component) {
   const ingredient = INGREDIENT_BY_ID[component.ingredient];
   const prep = PREP_LABELS[component.prep];
   return prep === 'fresh'
-    ? ingredient.name
+    ? ingredient.name.toLowerCase()
     : `${prep} ${ingredient.name.toLowerCase()}`;
 }
 

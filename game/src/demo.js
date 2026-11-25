@@ -30,15 +30,17 @@ export function seedDemoState(state, kind) {
   state.combo = 2;
   state.bestCombo = 3;
   state.spawnTimer = 6;
-  state.nextOrderId = 8;
+  // Tickets issued so far must cover served + lost + open orders: with 6
+  // served and 3 open, the next ticket is #10 (never a lower number).
+  state.nextOrderId = 10;
 
   if (kind === 'cover') {
     // The cover: three tickets, all three station kinds busy, a dish
     // mid-assembly on the plate, and a finished plate on the counter.
     state.orders = [
-      makeOrder(state, 5, 'sunny-burger', 34, 48),
-      makeOrder(state, 6, 'tomato-soup', 22, 40),
-      makeOrder(state, 7, 'garden-salad', 12, 40),
+      makeOrder(state, 7, 'sunny-burger', 34, 48),
+      makeOrder(state, 8, 'tomato-soup', 22, 40),
+      makeOrder(state, 9, 'garden-salad', 12, 40),
     ];
     setStation(state, 'chop-1', { ingredient: 'lettuce', prep: 'raw' }, 0.62, 'cooking');
     setStation(state, 'grill-1', { ingredient: 'patty', prep: 'raw' }, 0.8, 'cooking');
@@ -55,9 +57,9 @@ export function seedDemoState(state, kind) {
   if (kind === 'chop') {
     // Mid-prep: boards and grill full, pot finishing, plate half built.
     state.orders = [
-      makeOrder(state, 5, 'farm-plate', 30, 40),
-      makeOrder(state, 6, 'cheese-toast', 18, 40),
-      makeOrder(state, 7, 'sunny-burger', 38, 48),
+      makeOrder(state, 7, 'farm-plate', 30, 40),
+      makeOrder(state, 8, 'cheese-toast', 18, 40),
+      makeOrder(state, 9, 'sunny-burger', 38, 48),
     ];
     setStation(state, 'chop-1', { ingredient: 'carrot', prep: 'raw' }, 0.9, 'cooking');
     setStation(state, 'chop-2', { ingredient: 'lettuce', prep: 'raw' }, 0.35, 'cooking');
@@ -72,9 +74,9 @@ export function seedDemoState(state, kind) {
   if (kind === 'serve') {
     // A completed Sunny Burger on the plate, its ticket glowing SERVE!
     state.orders = [
-      makeOrder(state, 5, 'sunny-burger', 26, 48),
-      makeOrder(state, 6, 'garden-salad', 15, 40),
-      makeOrder(state, 7, 'tomato-soup', 36, 40),
+      makeOrder(state, 7, 'sunny-burger', 26, 48),
+      makeOrder(state, 8, 'garden-salad', 15, 40),
+      makeOrder(state, 9, 'tomato-soup', 36, 40),
     ];
     setStation(state, 'grill-2', { ingredient: 'cheese', prep: 'raw' }, 0.5, 'cooking');
     setStation(state, 'pot-2', { ingredient: 'potato', prep: 'raw' }, 0.3, 'cooking');
@@ -90,16 +92,19 @@ export function seedDemoState(state, kind) {
   }
 
   if (kind === 'end') {
-    // End of shift: the summary panel over a finished kitchen.
+    // End of shift: 13 served + 1 lost + 1 still open = 15 tickets issued,
+    // so the open ticket is #15 and the next would be #16. $312 clears the
+    // $300 three-star line.
     state.phase = 'over';
     state.timeLeft = 0;
-    state.coins = 214;
+    state.coins = 312;
     state.servedCount = 13;
     state.failedCount = 1;
     state.hearts = 2;
     state.combo = 0;
     state.bestCombo = 4;
-    state.orders = [makeOrder(state, 9, 'crunch-salad', 20, 32)];
+    state.nextOrderId = 16;
+    state.orders = [makeOrder(state, 15, 'golden-melt', 20, 32)];
     state.plate = [{ ingredient: 'bun', prep: 'raw' }];
     state.servedPlates = ['sunny-burger', 'tomato-soup', 'farm-plate'];
     return;
