@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Golden Ladle Bistro — a tiny cooking rush</title>
+<link rel="stylesheet" href="./styles.css">
+</head>
+<body>
+<div id="app">
+  <header id="topbar">
+    <div id="logo">Golden Ladle Bistro<small>COOK &middot; PLATE &middot; SERVE</small></div>
+    <div class="stat-chip"><span class="coin">$</span><span id="coinCount">0</span></div>
+    <div class="stat-chip" id="comboBadge"></div>
+    <div class="stat-chip" id="hearts">&#10084;&#65039;&#10084;&#65039;&#10084;&#65039;</div>
+    <div id="shiftTimer">2:30</div>
+    <button class="icon-btn" id="muteBtn" type="button">&#128266; Sound</button>
+    <button class="icon-btn" id="pauseBtn" type="button">&#9208; Pause</button>
+  </header>
+
+  <section id="orderBoardWrap">
+    <h2>ORDER BOARD <span>&mdash; click a ticket or SERVE to send a finished plate</span></h2>
+    <div id="orderBoard"></div>
+  </section>
+
+  <main id="kitchen">
+    <section id="stationsCol">
+      <h3>COOKING STATIONS</h3>
+      <div id="stationRow"></div>
+    </section>
+
+    <section id="plateCol">
+      <h3>ASSEMBLY PLATE</h3>
+      <div id="plate">
+        <div class="plate-label">BUILD THE DISH HERE &mdash; click a plate item to remove it</div>
+        <div id="plateItems"></div>
+        <div id="plateHint"></div>
+      </div>
+      <div id="serveRow">
+        <button id="serveBtn" type="button" disabled>SERVE</button>
+        <button id="trashBtn" type="button" title="Trash hand / last plate item">&#128465;</button>
+      </div>
+      <div id="handRow">
+        <span id="handSlot">&#129309;</span>
+        <span id="handText">Hands empty &mdash; grab an ingredient below</span>
+      </div>
+    </section>
+
+    <section id="serveCol">
+      <h3>SERVE COUNTER</h3>
+      <div id="serveCounter">
+        <div class="counter-label">FINISHED &mdash; READY FOR THE WAITER</div>
+        <div id="servedPlates"></div>
+      </div>
+      <div id="rushBanner">LUNCH RUSH! Orders are running low on patience!</div>
+    </section>
+  </main>
+
+  <footer id="ingredientCounter">
+    <h3>INGREDIENT COUNTER <span>&mdash; click a bin to pick it up (keys 1&ndash;8) &middot; C chop &middot; G grill &middot; B boil &middot; Space serve &middot; T trash</span></h3>
+    <div id="ingredientRow"></div>
+  </footer>
+
+  <div id="toast"></div>
+
+  <div class="overlay" id="startOverlay">
+    <div class="panel">
+      <h1><span class="ladle">&#129379;</span> Golden Ladle Bistro</h1>
+      <p>Run a tiny bistro through the lunch rush. Orders land on the board &mdash; cook them, plate them, serve them before patience runs out.</p>
+      <ol class="howto">
+        <li><b>1.</b> Click an ingredient on the counter to pick it up.</li>
+        <li><b>2.</b> Click a station to cook it: board chops, grill grills, pot boils. Collect it before it burns!</li>
+        <li><b>3.</b> Click the assembly plate to add each piece. Match a ticket exactly, then hit <b>SERVE</b>.</li>
+        <li><b>4.</b> Faster service means a bigger tip. Three lost orders end the shift early.</li>
+      </ol>
+      <p>150-second shift &middot; 6 original recipes &middot; no timers you can ignore.</p>
+      <button class="big-btn" id="startBtn" type="button">Start the shift</button>
+      <p style="font-size:13px;color:#8a7355">Mouse or keyboard &middot; Enter starts too</p>
+    </div>
+  </div>
+
+  <div class="overlay hidden" id="endOverlay">
+    <div class="panel">
+      <h1>Shift over!</h1>
+      <div id="endStats"></div>
+      <button class="big-btn" id="restartBtn" type="button">Cook another shift</button>
+      <p style="font-size:13px;color:#8a7355">Enter restarts too</p>
+    </div>
+  </div>
+</div>
+<script type="module" src="./src/main.js"></script>
+</body>
+</html>

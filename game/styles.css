@@ -1,0 +1,363 @@
+/* Golden Ladle Bistro — kitchen styling. Warm bistro palette, chunky readable counters. */
+:root {
+  --cream: #fff6e5;
+  --wood: #b07a45;
+  --wood-dark: #8a5a2b;
+  --tile: #2f6f5e;
+  --tile-light: #3f8a76;
+  --red: #e4572e;
+  --gold: #f2b705;
+  --ink: #2b2118;
+  --card: #fffdf6;
+  --green: #4caf50;
+  --amber: #ff9800;
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+html, body { height: 100%; }
+body {
+  font-family: "Trebuchet MS", "Segoe UI", Verdana, sans-serif;
+  background: #20342e;
+  color: var(--ink);
+  overflow: hidden;
+}
+#app {
+  width: 1280px;
+  height: 800px;
+  margin: 0 auto;
+  background: linear-gradient(#fdf3d8, #f7e3b0);
+  display: flex;
+  flex-direction: column;
+  position: relative;
+}
+
+/* ---------- top bar ---------- */
+#topbar {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 8px 16px;
+  background: var(--tile);
+  color: #fff;
+  border-bottom: 4px solid #24584a;
+}
+#logo { font-size: 26px; font-weight: 900; letter-spacing: 0.5px; white-space: nowrap; }
+#logo small { display: block; font-size: 11px; font-weight: 400; opacity: 0.85; letter-spacing: 2px; }
+#shiftTimer {
+  margin-left: auto;
+  font-size: 34px;
+  font-weight: 900;
+  background: #123b31;
+  border: 3px solid var(--gold);
+  border-radius: 12px;
+  padding: 2px 16px;
+  min-width: 150px;
+  text-align: center;
+  font-variant-numeric: tabular-nums;
+}
+#shiftTimer.low { color: #ff8a70; border-color: #ff8a70; animation: pulse 0.8s infinite alternate; }
+@keyframes pulse { from { transform: scale(1); } to { transform: scale(1.06); } }
+.stat-chip {
+  background: #123b31;
+  border-radius: 10px;
+  padding: 6px 12px;
+  font-size: 18px;
+  font-weight: 700;
+  white-space: nowrap;
+}
+.stat-chip .coin { color: var(--gold); }
+#hearts { font-size: 22px; letter-spacing: 2px; }
+.icon-btn {
+  background: #123b31;
+  color: #fff;
+  border: 2px solid #ffffff55;
+  border-radius: 10px;
+  font-size: 16px;
+  padding: 6px 10px;
+  cursor: pointer;
+}
+.icon-btn:hover { background: #1d5a49; }
+
+/* ---------- order board ---------- */
+#orderBoardWrap {
+  background: var(--wood);
+  border-bottom: 4px solid var(--wood-dark);
+  padding: 8px 16px 10px;
+}
+#orderBoardWrap h2 {
+  color: #fff;
+  font-size: 15px;
+  letter-spacing: 3px;
+  margin-bottom: 6px;
+}
+#orderBoardWrap h2 span { color: #ffd97a; font-size: 12px; letter-spacing: 1px; }
+#orderBoard { display: flex; gap: 12px; min-height: 96px; }
+.order-ticket {
+  flex: 1;
+  max-width: 300px;
+  background: var(--card);
+  border-radius: 10px;
+  border: 3px solid #d9c48a;
+  padding: 8px 10px;
+  cursor: pointer;
+  position: relative;
+  box-shadow: 0 3px 0 #00000022;
+}
+.order-ticket.serveable { border-color: var(--green); box-shadow: 0 0 0 3px #4caf5088, 0 3px 0 #00000022; }
+.order-ticket.serveable::after {
+  content: "SERVE! \2192";
+  position: absolute;
+  top: -12px;
+  right: 8px;
+  background: var(--green);
+  color: #fff;
+  font-weight: 900;
+  font-size: 13px;
+  padding: 2px 8px;
+  border-radius: 8px;
+}
+.order-ticket .ticket-head { display: flex; justify-content: space-between; font-weight: 900; font-size: 15px; }
+.order-ticket .ticket-head .price { color: var(--red); }
+.order-ticket .ticket-recipe { font-size: 26px; margin: 4px 0 2px; letter-spacing: 2px; }
+.order-ticket .ticket-needs { font-size: 12px; color: #6b5844; }
+.patience-bar { height: 8px; background: #e8dcc0; border-radius: 4px; margin-top: 6px; overflow: hidden; }
+.patience-fill { height: 100%; background: var(--green); border-radius: 4px; transition: width 0.2s linear; }
+.patience-fill.warn { background: var(--amber); }
+.patience-fill.crit { background: var(--red); }
+.order-empty {
+  flex: 1;
+  border: 3px dashed #ffffff66;
+  border-radius: 10px;
+  color: #ffffffaa;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 15px;
+  min-height: 96px;
+}
+
+/* ---------- kitchen ---------- */
+#kitchen {
+  flex: 1;
+  display: flex;
+  gap: 14px;
+  padding: 12px 16px;
+  background:
+    repeating-linear-gradient(90deg, transparent 0 64px, #00000008 64px 66px),
+    linear-gradient(#f3dfae, #eed49a);
+}
+#stationsCol { flex: 1.55; }
+#stationsCol h3, #plateCol h3, #serveCol h3 {
+  font-size: 14px;
+  letter-spacing: 2px;
+  color: #7a5a30;
+  margin-bottom: 6px;
+}
+#stationRow { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; }
+.station {
+  background: #fffaf0;
+  border: 3px solid #cbb27f;
+  border-radius: 12px;
+  padding: 8px;
+  min-height: 118px;
+  cursor: pointer;
+  position: relative;
+  text-align: center;
+  box-shadow: 0 3px 0 #00000018;
+}
+.station:hover { border-color: var(--gold); }
+.station.busy { border-color: var(--amber); }
+.station.done { border-color: var(--green); box-shadow: 0 0 0 3px #4caf5066; }
+.station.burnt { border-color: var(--red); background: #ffe9e2; }
+.station .station-icon { font-size: 30px; }
+.station .station-name { font-size: 13px; font-weight: 900; }
+.station .station-item { font-size: 34px; margin-top: 2px; }
+.station .station-state { font-size: 12px; color: #8a7355; font-weight: 700; }
+.progress-track { height: 10px; background: #e8dcc0; border-radius: 5px; margin-top: 6px; overflow: hidden; }
+.progress-fill { height: 100%; background: var(--amber); }
+.station.done .progress-fill { background: var(--green); }
+.station .burn-label { color: var(--red); font-weight: 900; font-size: 13px; }
+
+/* ---------- plate / assembly ---------- */
+#plateCol { flex: 1.15; display: flex; flex-direction: column; }
+#plate {
+  background: #fffaf0;
+  border: 3px solid #cbb27f;
+  border-radius: 12px;
+  padding: 10px;
+  min-height: 150px;
+  box-shadow: 0 3px 0 #00000018;
+}
+#plate .plate-label { font-size: 13px; font-weight: 900; color: #7a5a30; }
+#plateItems { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 8px; min-height: 64px; }
+.plate-item {
+  font-size: 34px;
+  background: #fff;
+  border: 2px solid #d9c48a;
+  border-radius: 10px;
+  padding: 4px 8px;
+  cursor: pointer;
+}
+.plate-item:hover { border-color: var(--red); }
+.plate-empty { color: #a08a68; font-size: 14px; align-self: center; }
+#plateHint { font-size: 12px; color: #8a7355; margin-top: 8px; }
+#plateHint b { color: var(--tile); }
+#serveRow { display: flex; gap: 10px; margin-top: 10px; }
+#serveBtn {
+  flex: 1;
+  background: var(--green);
+  color: #fff;
+  border: none;
+  border-radius: 12px;
+  font-size: 22px;
+  font-weight: 900;
+  padding: 12px 0;
+  cursor: pointer;
+  box-shadow: 0 4px 0 #2e7d32;
+}
+#serveBtn:disabled { background: #b9b09a; box-shadow: 0 4px 0 #8f8672; cursor: default; }
+#serveBtn.ready { animation: pulse 0.7s infinite alternate; }
+#trashBtn {
+  background: #fffaf0;
+  border: 3px solid #cbb27f;
+  border-radius: 12px;
+  font-size: 20px;
+  padding: 0 14px;
+  cursor: pointer;
+}
+#handRow {
+  margin-top: 10px;
+  background: #123b31;
+  color: #fff;
+  border-radius: 12px;
+  padding: 8px 12px;
+  font-size: 15px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+#handSlot { font-size: 28px; min-width: 40px; text-align: center; }
+#handRow .hand-empty { opacity: 0.7; }
+
+/* ---------- serve counter ---------- */
+#serveCol { flex: 0.85; display: flex; flex-direction: column; }
+#serveCounter {
+  background: #fffaf0;
+  border: 3px solid #cbb27f;
+  border-radius: 12px;
+  padding: 10px;
+  min-height: 150px;
+  box-shadow: 0 3px 0 #00000018;
+}
+#serveCounter .counter-label { font-size: 13px; font-weight: 900; color: #7a5a30; }
+#servedPlates { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 8px; }
+.served-plate { font-size: 34px; background: #e8f5e9; border: 2px solid var(--green); border-radius: 10px; padding: 4px 8px; }
+.counter-empty { color: #a08a68; font-size: 13px; margin-top: 8px; }
+#rushBanner {
+  margin-top: 10px;
+  background: var(--red);
+  color: #fff;
+  font-weight: 900;
+  font-size: 16px;
+  text-align: center;
+  border-radius: 10px;
+  padding: 8px;
+  display: none;
+}
+#rushBanner.on { display: block; animation: pulse 0.5s infinite alternate; }
+
+/* ---------- ingredient counter ---------- */
+#ingredientCounter {
+  background: var(--wood);
+  border-top: 4px solid var(--wood-dark);
+  padding: 10px 16px 12px;
+}
+#ingredientCounter h3 { color: #fff; font-size: 14px; letter-spacing: 2px; margin-bottom: 8px; }
+#ingredientCounter h3 span { color: #ffd97a; font-size: 12px; letter-spacing: 0; }
+#ingredientRow { display: flex; gap: 10px; }
+.ingredient-bin {
+  flex: 1;
+  background: var(--card);
+  border: 3px solid #d9c48a;
+  border-bottom-width: 5px;
+  border-radius: 12px;
+  padding: 6px 4px 4px;
+  text-align: center;
+  cursor: pointer;
+}
+.ingredient-bin:hover { border-color: var(--gold); transform: translateY(-2px); }
+.ingredient-bin .bin-emoji { font-size: 34px; }
+.ingredient-bin .bin-name { font-size: 13px; font-weight: 900; }
+.ingredient-bin .bin-prep { font-size: 11px; color: #8a7355; }
+.ingredient-bin .bin-key {
+  display: inline-block;
+  background: var(--tile);
+  color: #fff;
+  font-size: 11px;
+  font-weight: 900;
+  border-radius: 5px;
+  padding: 1px 6px;
+  margin-top: 3px;
+}
+
+/* ---------- overlays ---------- */
+.overlay {
+  position: absolute;
+  inset: 0;
+  background: #20342edd;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 20;
+}
+.overlay.hidden { display: none; }
+.panel {
+  background: var(--cream);
+  border-radius: 18px;
+  border: 4px solid var(--gold);
+  padding: 28px 36px;
+  max-width: 640px;
+  text-align: center;
+  box-shadow: 0 12px 40px #00000066;
+}
+.panel h1 { font-size: 40px; color: var(--tile); }
+.panel h1 .ladle { font-size: 44px; }
+.panel p { font-size: 16px; margin: 10px 0; line-height: 1.5; }
+.panel .howto { text-align: left; font-size: 15px; background: #fff; border-radius: 12px; padding: 14px 18px; margin: 14px 0; }
+.panel .howto li { margin: 5px 0 5px 18px; }
+.big-btn {
+  background: var(--red);
+  color: #fff;
+  border: none;
+  border-radius: 14px;
+  font-size: 24px;
+  font-weight: 900;
+  padding: 14px 42px;
+  cursor: pointer;
+  box-shadow: 0 5px 0 #a93218;
+}
+.big-btn:hover { filter: brightness(1.08); }
+#endStats { font-size: 18px; line-height: 1.8; margin: 12px 0; }
+#endStats .big-coins { font-size: 30px; font-weight: 900; color: var(--red); }
+.stars { font-size: 34px; letter-spacing: 4px; }
+
+/* ---------- toast ---------- */
+#toast {
+  position: absolute;
+  left: 50%;
+  bottom: 190px;
+  transform: translateX(-50%);
+  background: #123b31;
+  color: #fff;
+  font-size: 20px;
+  font-weight: 900;
+  padding: 10px 22px;
+  border-radius: 12px;
+  opacity: 0;
+  transition: opacity 0.2s;
+  pointer-events: none;
+  z-index: 30;
+  white-space: nowrap;
+}
+#toast.show { opacity: 1; }
+#toast.gold { background: var(--gold); color: var(--ink); }
