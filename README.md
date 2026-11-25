@@ -1,8 +1,8 @@
 # Golden Ladle Bistro
 
-[![make.fun bounty](https://img.shields.io/badge/make.fun-bounty-FF6B35)](https://make.fun/c/best-cooking-game-20261125-0137)
-[![repo](https://img.shields.io/badge/repo-best--cooking--game--20261125-2F6F5E)](https://github.com/sw897636-web/best-cooking-game-20261125)
-[![competition](https://img.shields.io/badge/competition-best--cooking--game--20261125--0137-F2B705)](https://make.fun/c/best-cooking-game-20261125-0137)
+[![make.fun · best-cooking-game-20261125-0137](https://make.fun/badge/best-cooking-game-20261125-0137.svg)](https://make.fun/bounty/best-cooking-game-20261125-0137?utm_source=github&utm_medium=readme&utm_campaign=best-cooking-game-20261125-0137)
+[![rank](https://make.fun/badge/best-cooking-game-20261125-0137/sw897636-web/best-cooking-game-20261125/rank.svg)](https://make.fun/bounty/best-cooking-game-20261125-0137/leaderboard?utm_source=github&utm_medium=readme&utm_campaign=best-cooking-game-20261125-0137)
+[![reward](https://make.fun/badge/best-cooking-game-20261125-0137/sw897636-web/best-cooking-game-20261125/reward.svg)](https://make.fun/bounty/best-cooking-game-20261125-0137?utm_source=github&utm_medium=readme&utm_campaign=best-cooking-game-20261125-0137)
 
 A tiny original cooking rush for the desktop browser: run a bistro through a
 150-second lunch shift. Orders land on the board, you grab ingredients off
